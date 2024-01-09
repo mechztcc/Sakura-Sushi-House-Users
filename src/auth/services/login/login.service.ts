@@ -2,7 +2,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { LoginDto } from '../../dto/login.dto';
 import { PrismaService } from '../../../shared/prisma/services/prisma.service';
 import { JwtService } from '@nestjs/jwt';
-import { compare } from 'bcrypt';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class LoginService {
@@ -17,7 +17,7 @@ export class LoginService {
       throw new UnauthorizedException('Incorrect email/password combination.');
     }
 
-    const passwordConfirmed = await compare(password, userExists.password);
+    const passwordConfirmed = await bcrypt.compare(password, userExists.password);
     if (!passwordConfirmed) {
       throw new UnauthorizedException('Incorrect email/password combination.');
     }

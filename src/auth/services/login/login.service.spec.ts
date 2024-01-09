@@ -3,7 +3,7 @@ import { LoginService } from './login.service';
 import { PrismaService } from '../../../shared/prisma/services/prisma.service';
 import { JwtService } from '@nestjs/jwt';
 import { UnauthorizedException } from '@nestjs/common';
-import { compare } from 'bcrypt';
+import * as bcrypt from 'bcrypt';
 
 describe('LoginService', () => {
   let service: LoginService;
@@ -57,5 +57,21 @@ describe('LoginService', () => {
     );
   });
 
+  it('should throw UnauthorizedException for incorrect password', async () => {
+    const existingUser = {
+      id: 1,
+      email: 'test@example.com',
+      password: 'hashedPassword123',
+      name: 'Test User',
+    };
 
+    (prismaService.user.findUnique as jest.Mock).mockResolvedValue(existingUser);
+
+    const loginData = {
+      email: 'test@example.com',
+      password: 'incorrectPassword',
+    };
+
+    await expect(service.execute(loginData)).rejects.toThrow(UnauthorizedException);
+  });
 });
