@@ -5,7 +5,7 @@ import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class CreateUserService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService) {}
 
   async execute({ email, phone, name, password, role }: CreateUserDto) {
     const userExists = await this.prisma.user.findFirst({
