@@ -3,10 +3,11 @@ import { JwtModule } from '@nestjs/jwt';
 import { AuthController } from './controllers/auth.controller';
 import { LoginService } from './services/login/login.service';
 import { PrismaModule } from 'src/shared/prisma/prisma.module';
+import { DecodeJwtService } from './services/decode-jwt/decode-jwt.service';
 
 @Module({
   controllers: [AuthController],
-  providers: [LoginService],
+  providers: [LoginService, DecodeJwtService],
   imports: [
     JwtModule.register({
       global: true,

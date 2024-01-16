@@ -6,10 +6,7 @@ import { CreateUserService } from '../services/create-user/create-user.service';
 export class UsersController {
   constructor(private createUsersService: CreateUserService) {}
 
-  @Get()
-  async test() {
-    return 'aeee';
-  } 
+
   @Post()
   async create(@Body() payload: CreateUserDto) {
     return this.createUsersService.execute(payload);
